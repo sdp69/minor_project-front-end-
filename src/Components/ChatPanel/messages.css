@@ -1,0 +1,5 @@
+.message{
+    flex-grow: 1;
+    background-color: #fefefe;
+    overflow: auto;
+}

@@ -11,3 +11,47 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.inputBar{
+  display: flex;
+  padding: 5px;
+}
+
+.insertMessage{
+  flex-grow: 1;
+}
+.user > h4{
+  display: inline-block;
+  margin: 10px;
+}
+
+.currentRoom{
+  padding: 8px;
+}
+
+.sendMessage{
+  margin: 5px;
+}
+
+.roomsHeader{
+  display: flex;
+  margin-top: 10px;
+}
+.roomsHeader > h4{
+  margin-right: 10px;
+}
+.roomModal, span:hover{
+  cursor: pointer;
+}
+.register{
+  text-align: center;
+  padding: 20px;
+  max-width: 450px;
+  margin: auto auto;
+}
+.registerUpper{
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

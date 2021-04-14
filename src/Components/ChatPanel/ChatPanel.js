@@ -1,44 +1,45 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useContext} from 'react';
 import './chatpanel.css'
-import firebase from "../Database/firebase";
+import firebase from "../../Database/firebase";
+import CurrentRoom from "./CurrentRoom";
+import Messages from "./Messages";
+import SentMessage from "./SendMessage/SendMessage";
+import CurrentRoomContext from "../../Context/CurrentRoomContext";
 
-const ChatPanel = (props) => {
+
+const ChatPanel = () => {
+    const {currentRoom} = useContext(CurrentRoomContext);
     const [messages, setMessages] = useState([]);
     const ref_toMessageVariable = useRef();
     ref_toMessageVariable.current = messages;
     const messageRef =  firebase.database().ref(`messages`);
+    const specificRoomId = messageRef.child(currentRoom.id);
+    console.log(currentRoom.id);
     const addMessageListener = () => {
-        messageRef.on(`child_added`, (snap) => {
+        setMessages([]);
+        specificRoomId.on(`child_added`, (snap) => {
             const prev_message = [...ref_toMessageVariable.current];
             console.log(snap.val());
             prev_message.push(snap.val());
+            console.log(prev_message);
             setMessages([...prev_message]);
         });
     };
     const removeMessageListener = () => {
         console.log(`messageListener Removed`);
-        messageRef.off();
+        specificRoomId.off();
     };
     useEffect(() => {
         addMessageListener();
         return () => removeMessageListener();
-    }, []);
+    }, [currentRoom.id]);
+
+
     return (
-        <div className="chatpanel">
-            <div>ChatPanel</div>
-            <div>room1</div>
-           <div style={{flexGrow: 1}}> <ul>
-               {messages.map((value, id) => {
-                   return (
-                       <li key={id}>{value.text}</li>
-                   )
-               })}
-           </ul></div>
-            <div style={{display: "flex"}}><input style={{flexGrow: 1}} placeholder="insert message..."/>
-            <button onClick={() => {messageRef.child(`id2`)
-                .set({text: `some text2`})
-                .then(msg => console.log(`success`))
-                .catch(e => console.log(`error: ${e}`))}}>SendMessage</button></div>
+        <div className="chatPanel">
+            <CurrentRoom messages={messages}/>
+            <Messages messages={messages}/>
+            <SentMessage messageRef={specificRoomId}/>
         </div>
     );
 }
