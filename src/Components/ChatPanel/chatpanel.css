@@ -1,0 +1,6 @@
+.chatpanel{
+    display: flex;
+    flex-grow: 1;
+    padding: 5px;
+    flex-direction: column;
+}
